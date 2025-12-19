@@ -1,0 +1,80 @@
+/* Application Page Styles */
+
+/* Sidebar Styles */
+.sidebar-icon-wrapper {
+  display: flex;
+  aspect-ratio: 1;
+  width: 2rem;
+  height: 2rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  background-color: hsl(var(--sidebar-primary));
+  color: hsl(var(--sidebar-primary-foreground));
+}
+
+.sidebar-text-wrapper {
+  display: grid;
+  flex: 1;
+  text-align: left;
+  font-size: 0.875rem;
+  line-height: 1.25;
+}
+
+.sidebar-text-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.sidebar-text-subtitle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.75rem;
+}
+
+/* Header Styles */
+.app-header {
+  display: flex;
+  height: 4rem;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 1px solid hsl(var(--border));
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.app-header-content {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.app-header-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.app-sidebar-trigger {
+  margin-left: -0.25rem;
+}
+
+/* Main Content Styles */
+.app-main-content {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  gap: 32px;
+  padding: 32px;
+}
+
+/* Carousel Wrapper Styles */
+.carousel-wrapper {
+  flex: 1;
+  min-width: 0;
+}
+

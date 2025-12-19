@@ -1,9 +1,7 @@
+import { ApplicationPage } from "@/components/application";
+
 export function App() {
-  return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="font-medium">Hello World</div>
-    </div>
-  )
+  return <ApplicationPage />;
 }
 
-export default App
+export default App;
