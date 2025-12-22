@@ -1,40 +1,5 @@
 /* Application Page Styles */
 
-/* Sidebar Styles */
-.sidebar-icon-wrapper {
-  display: flex;
-  aspect-ratio: 1;
-  width: 2rem;
-  height: 2rem;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.5rem;
-  background-color: hsl(var(--sidebar-primary));
-  color: hsl(var(--sidebar-primary-foreground));
-}
-
-.sidebar-text-wrapper {
-  display: grid;
-  flex: 1;
-  text-align: left;
-  font-size: 0.875rem;
-  line-height: 1.25;
-}
-
-.sidebar-text-title {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-weight: 600;
-}
-
-.sidebar-text-subtitle {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: 0.75rem;
-}
-
 /* Header Styles */
 .app-header {
   display: flex;
