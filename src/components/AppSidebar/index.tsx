@@ -2,7 +2,7 @@ import {
   Sidebar, SidebarContent, SidebarFooter, SidebarHeader,
   SidebarMenu, SidebarMenuButton, SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { Home, LayoutDashboard, Users, Settings, User, FileText, BarChart3, Bell, HelpCircle } from "lucide-react"
+import { LayoutDashboard, Users, Settings, User, FileText, BarChart3, Bell, HelpCircle } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 import "./AppSidebar.css"
 
@@ -35,8 +35,6 @@ const SidebarBrand = ({ icon: Icon, title, subtitle }: SidebarBrandProps) => (
 
 interface AppSidebarProps {
   menuItems?: MenuItem[]
-  brandTitle?: string
-  brandSubtitle?: string
   userTitle?: string
   userSubtitle?: string
 }
@@ -53,16 +51,13 @@ const defaultMenuItems: MenuItem[] = [
 
 export function AppSidebar({
   menuItems = defaultMenuItems,
-  brandTitle = "应用系统",
-  brandSubtitle = "",
-  userTitle = "管理员",
-  userSubtitle = "admin@example.com",
+
 }: AppSidebarProps) {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
         <SidebarMenu>
-          <SidebarBrand icon={Home} title={brandTitle} subtitle={brandSubtitle} />
+          {/* <SidebarBrand icon={LayoutDashboard} title={brandTitle} subtitle={brandSubtitle} /> */}
         </SidebarMenu>
       </SidebarHeader>
 
@@ -70,10 +65,10 @@ export function AppSidebar({
         <SidebarMenu>
           {menuItems.map((item) => (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton asChild tooltip={item.title} isActive={item.isActive}>
+              <SidebarMenuButton asChild tooltip={item.title} isActive={item.isActive} className="menu-item-vertical">
                 <a href={item.url}>
-                  <item.icon />
-                  <span>{item.title}</span>
+                  <item.icon className="menu-item-icon" />
+                  <span className="menu-item-text">{item.title}</span>
                 </a>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -83,7 +78,6 @@ export function AppSidebar({
 
       <SidebarFooter>
         <SidebarMenu>
-          <SidebarBrand icon={User} title={userTitle} subtitle={userSubtitle} />
         </SidebarMenu>
       </SidebarFooter>
     </Sidebar>

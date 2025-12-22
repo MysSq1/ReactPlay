@@ -1,45 +1,75 @@
-/* Application Page Styles */
-
-/* Header Styles */
-.app-header {
-  display: flex;
-  height: 4rem;
-  flex-shrink: 0;
-  align-items: center;
-  gap: 0.5rem;
-  border-bottom: 1px solid hsl(var(--border));
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
-.app-header-content {
-  display: flex;
-  flex: 1;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.app-header-title {
-  font-size: 1.125rem;
-  font-weight: 600;
-}
-
-.app-sidebar-trigger {
-  margin-left: -0.25rem;
-}
-
-/* Main Content Styles */
 .app-main-content {
   display: flex;
   flex: 1;
-  flex-direction: row;
-  gap: 32px;
-  padding: 32px;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  overflow-y: auto;
 }
 
-/* Carousel Wrapper Styles */
+.carousel-section,
+.cards-section {
+  display: flex;
+  gap: 24px;
+}
+
 .carousel-wrapper {
   flex: 1;
   min-width: 0;
+}
+
+.card-item {
+  flex: 1;
+  min-width: 0;
+  aspect-ratio: 21 / 9;
+  padding: 0;
+  overflow: hidden;
+}
+
+.card-item-42-9 {
+  flex: 2;
+  aspect-ratio: 42 / 9;
+}
+
+.card-content-21-9 {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.basic-menu-section {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  margin-top: 24px;
+}
+
+.basic-menu {
+  display: flex;
+  gap: 12px;
+}
+
+.basic-menu-vertical {
+  margin: 0 4px;
+  height: auto;
+  align-self: stretch;
+}
+
+.basic-menu-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.basic-menu-search {
+  width: 512px;
+  height: 48px;
+}
+
+.basic-menu-search [data-slot="input-group-control"] {
+  height: 100%;
 }
 

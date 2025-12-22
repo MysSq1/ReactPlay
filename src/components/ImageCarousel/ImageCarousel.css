@@ -1,33 +1,23 @@
-/* Image Carousel Component Styles */
-
 .image-carousel {
   position: relative;
-  width: 100%;
-  display: block;
 }
 
 .image-carousel-container {
-  width: 100%;
   border-radius: 0.75rem;
-  overflow: visible;
-  isolation: isolate;
   position: relative;
 }
 
 .image-carousel-item-wrapper {
-  width: 100%;
   border-radius: 0.75rem;
   border: 2px solid hsl(var(--border));
   background-color: hsl(var(--card));
-  max-height: 280px;
+  max-height: 192px;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease, border-color 0.3s ease;
-  position: relative;
-  isolation: isolate;
 }
 
 .image-carousel-item-wrapper:hover {
@@ -37,35 +27,19 @@
 
 .image-carousel-image {
   width: 100%;
-  height: 280px;
+  height: 192px;
   object-fit: cover;
-  display: block;
   border-radius: 0.75rem;
   pointer-events: none;
   user-select: none;
 }
 
-/* 确保轮播项容器保持圆角 */
-.image-carousel-container [data-slot="carousel-item"] {
-  border-radius: 0.75rem;
-  overflow: hidden;
-  isolation: isolate;
-}
-
-/* 确保轮播内容区域保持圆角 */
+.image-carousel-container [data-slot="carousel-item"],
 .image-carousel-container [data-slot="carousel-content"] {
   border-radius: 0.75rem;
-  position: relative;
   overflow: hidden;
 }
 
-/* 修复切换时的圆角闪烁问题 */
-.image-carousel-item-wrapper,
-.image-carousel-item-wrapper * {
-  border-radius: inherit;
-}
-
-/* 导航按钮样式 */
 .image-carousel-nav-previous,
 .image-carousel-nav-next {
   opacity: 0;
@@ -74,16 +48,14 @@
 }
 
 .image-carousel:hover .image-carousel-nav-previous,
-.image-carousel:hover .image-carousel-nav-next,
-.image-carousel-container:hover .image-carousel-nav-previous,
-.image-carousel-container:hover .image-carousel-nav-next {
+.image-carousel:hover .image-carousel-nav-next {
   opacity: 0.5;
   pointer-events: auto;
 }
 
 .image-carousel-nav-previous:hover,
 .image-carousel-nav-next:hover {
-  opacity: 1 !important;
+  opacity: 1;
 }
 
 .image-carousel-nav-previous {
@@ -94,15 +66,12 @@
   right: 0.5rem;
 }
 
-/* 指示器样式 */
 .image-carousel-indicators {
   position: absolute;
   bottom: 8px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  justify-content: center;
-  align-items: center;
   gap: 0.5rem;
   padding: 0.5rem;
   opacity: 0.5;
@@ -110,7 +79,6 @@
   pointer-events: none;
   width: calc(100% - 2rem);
   max-width: 300px;
-  background: transparent;
 }
 
 .image-carousel-indicator-item {
@@ -129,6 +97,5 @@
   background-color: rgba(255, 255, 255, 1);
   flex: 1.5;
   max-width: 60px;
-  opacity: 1;
 }
 

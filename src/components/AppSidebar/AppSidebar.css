@@ -1,5 +1,3 @@
-/* AppSidebar Styles */
-
 .sidebar-icon-wrapper {
   display: flex;
   aspect-ratio: 1;
@@ -32,5 +30,40 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   font-size: 0.75rem;
+}
+
+.menu-item-vertical {
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0.75rem 0.5rem !important;
+  gap: 0.5rem !important;
+  width: fit-content !important;
+  height: auto !important;
+}
+
+.menu-item-vertical > a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+[data-sidebar="menu-item"] {
+  display: flex;
+  justify-content: center;
+}
+
+.menu-item-icon {
+  width: 32px !important;
+  height: 32px !important;
+  flex-shrink: 0;
+}
+
+.menu-item-text {
+  font-size: 0.75rem;
+  text-align: center;
+  line-height: 1.2;
 }
 
