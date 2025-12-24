@@ -1,10 +1,11 @@
 .app-main-content {
   display: flex;
-  flex: 1;
+  /* flex: 1; */
   flex-direction: column;
   gap: 24px;
   padding: 12px;
   overflow-y: auto;
+  height: 100vh;
 }
 
 .carousel-section,
@@ -44,6 +45,11 @@
   display: flex;
   align-items: center;
   gap: 32px;
+  position: sticky;
+  top: -12px;
+  background-color: black;
+  padding: 12px;
+  z-index: 100;
   /* margin-top: 12px; */
 }
 
