@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { InputGroup, InputGroupInput, InputGroupAddon, InputGroupButton } from "@/components/ui/input-group"
 import { Search } from "lucide-react"
-import { useState } from "react"
+import { useState, useLayoutEffect, useRef, useEffect } from "react"
 import "./application.css"
 import img1 from "@/assets/img/1.jpg"
 import img2 from "@/assets/img/2.jpg"
@@ -23,11 +23,98 @@ const cards = [
   { id: 4, text: "卡片 3", className: "card-item" },
   { id: 5, text: "卡片 4", className: "card-item" },
 ]
+const generateRatioCards = () => {
+  const ratios = [
+    { w: 9, h: 16, count: 20 },
+    { w: 16, h: 9, count: 20 }, 
+  ]
+  
+  const allCards: Array<{ id: number; image: string; aspectRatio: string }> = []
+  
+  ratios.forEach((ratio) => {
+    for (let i = 0; i < ratio.count; i++) {
+      const randomImage = images[Math.floor(Math.random() * images.length)]
+      allCards.push({
+        id: allCards.length + 1,
+        image: randomImage,
+        aspectRatio: `${ratio.w} / ${ratio.h}`,
+      })
+    }
+  })
+  
+  // 随机打乱顺序
+  return allCards.sort(() => Math.random() - 0.5)
+}
+
+const ratioCards = generateRatioCards()
 
 const menuItems = ["推荐", "关注", "活动"]
 
 export function ApplicationPage() {
   const [activeMenu, setActiveMenu] = useState("推荐")
+  const containerRef = useRef<HTMLDivElement>(null)
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([])
+
+  // 计算瀑布流布局的函数
+  const calculateLayout = () => {
+    if (!containerRef.current) return
+
+    const container = containerRef.current
+    const wrappers = cardRefs.current.filter(Boolean) as HTMLElement[]
+    if (wrappers.length === 0) return
+
+    // 根据容器宽度自适应列数
+    const containerWidth = container.offsetWidth
+    let columnCount = 5
+    if (containerWidth < 480) {
+      columnCount = 2
+    } else if (containerWidth < 768) {
+      columnCount = 3
+    } else if (containerWidth < 1024) {
+      columnCount = 4
+    } else {
+      columnCount = 5
+    }
+
+    // 响应式间距：根据容器宽度计算，最小4px，最大8px
+    const gap = Math.max(4, Math.min(8, containerWidth * 0.01))
+    const columnWidth = (containerWidth - gap * (columnCount - 1)) / columnCount
+    const columnHeights = new Array(columnCount).fill(0)
+
+    wrappers.forEach((wrapper) => {
+      const card = wrapper.querySelector('[data-slot="card"]') as HTMLElement
+      if (!card) return
+
+      const shortestColumnIndex = columnHeights.indexOf(Math.min(...columnHeights))
+      const left = shortestColumnIndex * (columnWidth + gap)
+      const top = columnHeights[shortestColumnIndex]
+
+      wrapper.style.position = 'absolute'
+      wrapper.style.left = `${left}px`
+      wrapper.style.top = `${top}px`
+      wrapper.style.width = `${columnWidth}px`
+
+      const cardHeight = wrapper.offsetHeight || wrapper.getBoundingClientRect().height
+      columnHeights[shortestColumnIndex] += cardHeight + gap
+    })
+
+    container.style.height = `${Math.max(...columnHeights)}px`
+  }
+
+  useLayoutEffect(() => {
+    calculateLayout()
+  }, [ratioCards])
+
+  // 监听窗口大小变化，重新计算瀑布流布局
+  useEffect(() => {
+    const handleResize = () => {
+      calculateLayout()
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [ratioCards])
+
   return (
     <SidebarProvider
       style={{
@@ -55,6 +142,7 @@ export function ApplicationPage() {
               </Card>
             ))}
           </div>
+          
           <div className="basic-menu-section">
             <div className="basic-menu">
               {menuItems.map((item) => (
@@ -80,6 +168,21 @@ export function ApplicationPage() {
               </InputGroup>
             </div>
           </div>
+
+          <div className="cards-section-1" ref={containerRef}>
+            {ratioCards.map((card, index) => (
+              <div
+                key={card.id}
+                ref={(el) => { cardRefs.current[index] = el }}
+                className="card-wrapper"
+              >
+                <Card style={{ aspectRatio: card.aspectRatio, padding: 0, overflow: 'hidden' }}>
+                  <img src={card.image} alt={`卡片 ${card.id}`} className="card-image" />
+                </Card>
+              </div>
+            ))}
+          </div>
+
         </div>
       </SidebarInset>
     </SidebarProvider>
