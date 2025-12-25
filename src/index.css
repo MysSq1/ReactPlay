@@ -38,6 +38,21 @@
     --sidebar-accent-foreground: oklch(0.205 0 0);
     --sidebar-border: oklch(0.922 0 0);
     --sidebar-ring: oklch(0.708 0 0);
+
+    /* ===== 全局表单与通用样式变量 ===== */
+    /* 输入框尺寸与字体 */
+    --input-height: 48px;
+    --input-font-size: 14px;
+    --input-border-radius: 8px;
+    --input-text-color: var(--foreground);
+    --input-padding-x: 12px;
+    
+    /* 默认输入框宽度 (特定页面可覆盖) */
+    --input-width-default: 456px;
+    
+    /* 按钮样式 */
+    --button-height: 44px;
+    --button-font-size: 16px;
 }
 
 .dark {
@@ -119,11 +134,62 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
-    }
+  }
   body {
     @apply font-sans bg-background text-foreground;
-    }
+  }
   html {
     @apply font-sans;
-    }
+  }
+  
+  /* 全局输入框通用样式重置与定义 */
+  [data-slot="input"] {
+    color: var(--input-text-color);
+    font-size: var(--input-font-size);
+    height: var(--input-height);
+    line-height: var(--input-height); /* 确保垂直居中 */
+    border-radius: var(--input-border-radius);
+    padding: 0 var(--input-padding-x);
+    box-shadow: none;
+    background: transparent;
+    border: 1px solid var(--border);
+    outline: none;
+    box-sizing: border-box;
+    /* 默认去除浏览器默认外观 */
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  /* 输入框 focus 状态 - 使用 shadcn ring 变量 */
+  [data-slot="input"]:focus {
+    border-color: var(--ring);
+    outline: none;
+  }
+}
+
+@layer components {
+  /* 全局表单组样式 */
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .form-group label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--foreground);
+  }
+
+  /* 通用全宽提交按钮样式 */
+  .btn-submit {
+    width: 100%;
+    height: var(--button-height);
+    font-size: var(--button-font-size);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }

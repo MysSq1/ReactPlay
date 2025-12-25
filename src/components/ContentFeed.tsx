@@ -7,7 +7,9 @@ import { Separator } from "@/components/ui/separator"
 import { InputGroup, InputGroupInput, InputGroupAddon, InputGroupButton } from "@/components/ui/input-group"
 import { Search } from "lucide-react"
 import { useState, useLayoutEffect, useRef, useEffect } from "react"
-import "./application.css"
+import { useNavigate } from "react-router-dom"
+import { useAuth } from "@/contexts/AuthContext"
+import "./ContentFeed.css"
 import img1 from "@/assets/img/1.jpg"
 import img2 from "@/assets/img/2.jpg"
 import img3 from "@/assets/img/3.jpg"
@@ -50,15 +52,30 @@ const ratioCards = generateRatioCards()
 
 const menuItems = ["推荐", "关注", "活动"]
 
-export function ApplicationPage() {
+export function ContentFeed() {
   const [activeMenu, setActiveMenu] = useState("推荐")
   const containerRef = useRef<HTMLDivElement>(null)
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
+  const { isAuthenticated } = useAuth()
+  const navigate = useNavigate()
+
+  // 处理菜单点击
+  const handleMenuClick = (item: string) => {
+    if (item === "关注") {
+      // 检查用户是否已登录
+      if (!isAuthenticated) {
+        // 未登录，跳转到登录页面
+        navigate("/login")
+        return
+      }
+    }
+    // 已登录或点击其他菜单项，正常切换
+    setActiveMenu(item)
+  }
 
   // 计算瀑布流布局的函数
   const calculateLayout = () => {
     if (!containerRef.current) return
-
     const container = containerRef.current
     const wrappers = cardRefs.current.filter(Boolean) as HTMLElement[]
     if (wrappers.length === 0) return
@@ -149,7 +166,7 @@ export function ApplicationPage() {
                 <Button
                   key={item}
                   variant={activeMenu === item ? "default" : "outline"}
-                  onClick={() => setActiveMenu(item)}
+                  onClick={() => handleMenuClick(item)}
                   className="basic-menu-item"
                 >
                   {item}
@@ -189,4 +206,3 @@ export function ApplicationPage() {
   )
 }
 
-  
