@@ -1,16 +1,87 @@
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useAuth } from "@/contexts/AuthContext"
 import "./login.css"
 
+// 视频列表数据
+const videoList = [
+  "/video1.mp4",
+  "/video2.mp4",
+  "/video3.mp4",
+  "/video4.mp4",
+]
+
 export function Login() {
   const [phone, setPhone] = useState("")
   const [code, setCode] = useState("")
   const [countdown, setCountdown] = useState(0)
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0)
+  const [isTransitioning, setIsTransitioning] = useState(false)
   const { login } = useAuth()
   const navigate = useNavigate()
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  // 视频播放结束，切换到下一个视频
+  const handleVideoEnded = () => {
+    setIsTransitioning(true)
+    setTimeout(() => {
+      setCurrentVideoIndex((prevIndex) => {
+        const nextIndex = (prevIndex + 1) % videoList.length
+        return nextIndex
+      })
+      setTimeout(() => {
+        setIsTransitioning(false)
+      }, 50)
+    }, 500) // 淡出时间
+  }
+
+  // 处理视频可以播放时的事件
+  const handleVideoCanPlay = () => {
+    if (videoRef.current) {
+      videoRef.current.play().catch((error) => {
+        // 忽略 AbortError，这是正常的切换行为
+        if (error.name !== 'AbortError') {
+          console.error("视频自动播放失败:", error)
+        }
+      })
+    }
+  }
+
+  // 当视频索引改变时，加载新视频
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.pause()
+      videoRef.current.currentTime = 0
+      videoRef.current.load()
+    }
+  }, [currentVideoIndex])
+  useEffect(() => {
+    if (videoRef.current) {
+      const video = videoRef.current
+      const handleCanPlay = () => {
+        video.play().catch((error) => {
+          if (error.name !== 'AbortError') {
+            console.error("视频自动播放失败:", error)
+          }
+        })
+      }
+      
+      video.addEventListener('canplay', handleCanPlay)
+      if (video.readyState >= 3) {
+        video.play().catch((error) => {
+          if (error.name !== 'AbortError') {
+            console.error("视频自动播放失败:", error)
+          }
+        })
+      }
+      
+      return () => {
+        video.removeEventListener('canplay', handleCanPlay)
+      }
+    }
+  }, [])
 
   // 获取验证码
   const handleGetCode = () => {
@@ -32,7 +103,7 @@ export function Login() {
         }
         return prev - 1
       })
-    }, 1000)
+    }, 100)
   }
 
   // 手机登录
@@ -43,7 +114,7 @@ export function Login() {
       return
     }
     // 测试账号验证
-    if (phone === "18806034698" && code === "123456") {
+    if (phone === "18806034698" && code === "666666") {
       login({
         id: Date.now().toString(),
         email: `${phone}@phone.com`,
@@ -58,8 +129,21 @@ export function Login() {
   return (
     <div className="login-container">
       {/* 左半边：视频播放区域 */}
-      <div className="login-video-section"></div>
-
+      <div className="login-video-section">
+        <video
+          ref={videoRef}
+          className={`login-video ${isTransitioning ? "fade-out" : "fade-in"}`}
+          muted
+          playsInline
+          preload="auto"
+          onEnded={handleVideoEnded}
+          onCanPlay={handleVideoCanPlay}
+        >
+          <source src={videoList[currentVideoIndex]} type="video/mp4" />
+          您的浏览器不支持视频播放。
+        </video>
+      </div>
+    
       {/* 右半边：登录注册功能区 */}
       <div className="login-form-section">
         <div className="login-content">

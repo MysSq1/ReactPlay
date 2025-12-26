@@ -2,8 +2,11 @@ import {
   Sidebar, SidebarContent, SidebarFooter, SidebarHeader,
   SidebarMenu, SidebarMenuButton, SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { LayoutDashboard, Users, Settings, User, FileText, BarChart3, Bell, HelpCircle } from "lucide-react"
+import { LayoutDashboard, Users, Settings, FileText, BarChart3, Bell, HelpCircle, LogOut } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
+import { useAuth } from "@/contexts/AuthContext"
+import { useNavigate } from "react-router-dom"
 import "./AppSidebar.css"
 
 interface MenuItem {
@@ -13,26 +16,6 @@ interface MenuItem {
   isActive?: boolean
 }
 
-interface SidebarBrandProps {
-  icon: LucideIcon
-  title: string
-  subtitle: string
-}
-
-const SidebarBrand = ({ icon: Icon, title, subtitle }: SidebarBrandProps) => (
-  <SidebarMenuItem>
-    <SidebarMenuButton size="lg" asChild>
-      <a href="#">
-        <div className="sidebar-icon-wrapper"><Icon className="size-4" /></div>
-        <div className="sidebar-text-wrapper">
-          <span className="sidebar-text-title">{title}</span>
-          <span className="sidebar-text-subtitle">{subtitle}</span>
-        </div>
-      </a>
-    </SidebarMenuButton>
-  </SidebarMenuItem>
-)
-
 interface AppSidebarProps {
   menuItems?: MenuItem[]
   userTitle?: string
@@ -40,19 +23,18 @@ interface AppSidebarProps {
 }
 
 const defaultMenuItems: MenuItem[] = [
-  { title: "仪表盘", icon: LayoutDashboard, url: "#", isActive: true },
-  { title: "用户管理", icon: Users, url: "#" },
+  { title: "首页", icon: LayoutDashboard, url: "#",},
+  { title: "创意圈", icon: Users, url: "#" },
   { title: "数据分析", icon: BarChart3, url: "#" },
-  { title: "文档", icon: FileText, url: "#" },
-  { title: "通知", icon: Bell, url: "#" },
-  { title: "帮助", icon: HelpCircle, url: "#" },
-  { title: "设置", icon: Settings, url: "#" },
 ]
 
 export function AppSidebar({
   menuItems = defaultMenuItems,
 
 }: AppSidebarProps) {
+  const { isAuthenticated, logout } = useAuth()
+  const navigate = useNavigate()
+
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
@@ -78,6 +60,30 @@ export function AppSidebar({
 
       <SidebarFooter>
         <SidebarMenu>
+          {isAuthenticated ? (
+            <>
+              <Avatar size="lg">
+                <AvatarImage src="/path/to/image.jpg" alt="User" />
+                <AvatarFallback>JD</AvatarFallback>
+              </Avatar>
+              {/* <SidebarMenuItem>
+                <SidebarMenuButton onClick={logout} tooltip="退出登录">
+                  <LogOut className="menu-item-icon" />
+                  <span className="menu-item-text">退出登录</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem> */}
+            </>
+          ) : (
+            <SidebarMenuItem>
+              <button
+                onClick={() => navigate("/login")}
+                className="login-button-input-style"
+                data-slot="input"
+              >
+                登录
+              </button>
+            </SidebarMenuItem>
+          )}
         </SidebarMenu>
       </SidebarFooter>
     </Sidebar>

@@ -135,8 +135,8 @@ export function ContentFeed() {
   return (
     <SidebarProvider
       style={{
-        "--sidebar-width": "4rem",
-        "--sidebar-width-icon": "4rem",
+        "--sidebar-width": "5rem",
+        "--sidebar-width-icon": "5rem",
       } as React.CSSProperties}
     >
       <AppSidebar />
