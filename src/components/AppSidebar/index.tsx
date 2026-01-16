@@ -2,9 +2,18 @@ import {
   Sidebar, SidebarContent, SidebarFooter, SidebarHeader,
   SidebarMenu, SidebarMenuButton, SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { LayoutDashboard, Users, Settings, FileText, BarChart3, Bell, HelpCircle, LogOut } from "lucide-react"
+import { LayoutDashboard, Users, BarChart3, LogOut, User, Settings } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { useAuth } from "@/contexts/AuthContext"
 import { useNavigate } from "react-router-dom"
 import "./AppSidebar.css"
@@ -32,8 +41,13 @@ export function AppSidebar({
   menuItems = defaultMenuItems,
 
 }: AppSidebarProps) {
-  const { isAuthenticated, logout } = useAuth()
+  const { isAuthenticated, user, logout } = useAuth()
   const navigate = useNavigate()
+
+  const handleLogout = () => {
+    logout()
+    navigate("/login")
+  }
 
   return (
     <Sidebar collapsible="icon">
@@ -61,18 +75,27 @@ export function AppSidebar({
       <SidebarFooter>
         <SidebarMenu>
           {isAuthenticated ? (
-            <>
-              <Avatar size="lg">
-                <AvatarImage src="/path/to/image.jpg" alt="User" />
-                <AvatarFallback>JD</AvatarFallback>
-              </Avatar>
-              {/* <SidebarMenuItem>
-                <SidebarMenuButton onClick={logout} tooltip="退出登录">
-                  <LogOut className="menu-item-icon" />
-                  <span className="menu-item-text">退出登录</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem> */}
-            </>
+            <SidebarMenuItem>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="avatar-container" style={{ border: 'none', background: 'transparent', cursor: 'pointer', padding: 0 }}>
+                    <Avatar size="lg">
+                      <AvatarImage src="/path/to/image.jpg" alt="User"/>
+                      <AvatarFallback>
+                        {"Mys"}
+                      </AvatarFallback>
+                    </Avatar>
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end">
+                 
+                  <DropdownMenuItem onClick={handleLogout} variant="destructive">
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>退出登录</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </SidebarMenuItem>
           ) : (
             <SidebarMenuItem>
               <button

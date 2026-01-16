@@ -92,3 +92,22 @@
   outline: none;
 }
 
+
+.avatar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 0.5rem 0;
+}
+
+/* 侧边栏背景色 */
+[data-sidebar="sidebar"] {
+  background-color: transparent !important;
+}
+/* 移除侧边栏和主页面的边框 */
+[data-slot="sidebar-container"] {
+  border-right: none !important;
+  border-left: none !important;
+}
+
